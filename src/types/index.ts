@@ -10,6 +10,8 @@ export interface Course {
   description: string | null;
   start_date: string;
   end_date: string;
+  image_url: string | null;
+  level: string | null;
   creator_id: number;
   created_at: string;
   updated_at: string;
