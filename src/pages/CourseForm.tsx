@@ -10,6 +10,8 @@ import Loading from '../components/Loading';
 export default function CourseForm() {
   const { id } = useParams();
   const isEditing = Boolean(id);
+  const [imageUrl, setImageUrl] = useState('');
+  const [level, setLevel] = useState('');
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -31,6 +33,8 @@ export default function CourseForm() {
           setDescription(course.description || '');
           setStartDate(course.start_date);
           setEndDate(course.end_date);
+          setImageUrl(course.image_url || '');
+          setLevel(course.level || '');
         } catch {
           setError('Failed to load course');
         } finally {
@@ -69,6 +73,8 @@ export default function CourseForm() {
         description,
         start_date: startDate,
         end_date: endDate,
+        image_url: imageUrl || null,
+        level: level || null,
       };
 
       if (isEditing) {
@@ -144,6 +150,27 @@ export default function CourseForm() {
               value={endDate}
               onChange={setEndDate}
             />
+            
+            <FormInput
+              label="Image URL"
+              value={imageUrl}
+              onChange={setImageUrl}
+              placeholder="https://example.com/image.jpg (optional)"
+            />
+
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-700 mb-1">Level</label>
+              <select
+                value={level}
+                onChange={(e) => setLevel(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Select level (optional)</option>
+                <option value="beginner">Beginner</option>
+                <option value="intermediate">Intermediate</option>
+                <option value="advanced">Advanced</option>
+              </select>
+            </div>
 
             <div className="flex gap-3 mt-6">
               <Button type="submit" disabled={loading}>
