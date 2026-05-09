@@ -8,6 +8,7 @@ import Button from '../components/Button';
 import ErrorMessage from '../components/ErrorMessage';
 import Loading from '../components/Loading';
 import EmptyState from '../components/EmptyState';
+import ChatBot from '../components/ChatBot';
 
 export default function CourseDetails() {
   const { id } = useParams();
@@ -176,6 +177,12 @@ export default function CourseDetails() {
             ← Back to courses
           </Button>
         </div>
+        <div className="mt-6">
+          <Button variant="secondary" onClick={() => navigate('/')}>
+            ← Back to courses
+          </Button>
+        </div>
+        <ChatBot courseId={Number(id)} />
       </div>
     </div>
   );
