@@ -9,6 +9,7 @@ import ErrorMessage from '../components/ErrorMessage';
 import Loading from '../components/Loading';
 import EmptyState from '../components/EmptyState';
 import ChatBot from '../components/ChatBot';
+import CourseHeroBanner from '../components/CourseHeroBanner';
 
 export default function CourseDetails() {
   const { id } = useParams();
@@ -85,32 +86,21 @@ export default function CourseDetails() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-light-bg dark:bg-dark-bg">
       <Navbar />
+      <CourseHeroBanner course={course} />
 
       <div className="max-w-4xl mx-auto px-4 py-8">
-        <div className="flex justify-between items-start mb-6">
-          <div>
-            <h2 className="text-2xl font-bold">{course.name}</h2>
-            {course.description && (
-              <p className="text-gray-600 mt-2">{course.description}</p>
-            )}
-            <p className="text-sm text-gray-500 mt-2">
-              {course.start_date} → {course.end_date}
-            </p>
+        {isCreator && (
+          <div className="flex gap-2 mb-6">
+            <Button onClick={() => navigate(`/courses/${id}/edit`)}>Edit Course</Button>
+            <Button variant="danger" onClick={() => setDeleteConfirm(true)}>Delete Course</Button>
           </div>
-
-          {isCreator && (
-            <div className="flex gap-2">
-              <Button onClick={() => navigate(`/courses/${id}/edit`)}>Edit</Button>
-              <Button variant="danger" onClick={() => setDeleteConfirm(true)}>Delete</Button>
-            </div>
-          )}
-        </div>
+        )}
 
         {deleteConfirm && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-            <p className="text-red-700 mb-3">Are you sure you want to delete this course? This will also delete all lessons.</p>
+          <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
+            <p className="text-danger mb-3">Are you sure you want to delete this course? This will also delete all lessons.</p>
             <div className="flex gap-2">
               <Button variant="danger" onClick={handleDeleteCourse}>Yes, delete</Button>
               <Button variant="secondary" onClick={() => setDeleteConfirm(false)}>Cancel</Button>
@@ -120,14 +110,14 @@ export default function CourseDetails() {
 
         <ErrorMessage message={error} />
 
-        <div className="mt-8">
+        <div className="mt-4">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-xl font-bold">Lessons</h3>
+            <h3 className="font-pixel text-xs text-light-text dark:text-dark-text">Lessons</h3>
             <div className="flex gap-3 items-center">
               <select
                 value={statusFilter}
                 onChange={(e) => setStatusFilter(e.target.value as 'all' | 'draft' | 'published')}
-                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="px-3 py-2 border border-light-border dark:border-dark-border bg-light-card dark:bg-dark-bg text-light-text dark:text-dark-text rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="all">All</option>
                 <option value="draft">Draft</option>
@@ -147,15 +137,15 @@ export default function CourseDetails() {
             {filteredLessons.map((lesson) => (
               <div
                 key={lesson.id}
-                className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 flex justify-between items-center"
+                className="bg-light-card dark:bg-dark-card rounded-lg shadow-sm border border-light-border dark:border-dark-border p-4 flex justify-between items-center"
               >
                 <div>
-                  <h4 className="font-semibold">{lesson.title}</h4>
+                  <h4 className="font-semibold text-light-text dark:text-dark-text">{lesson.title}</h4>
                   <span
                     className={`text-xs px-2 py-1 rounded-full ${
                       lesson.status === 'published'
-                        ? 'bg-green-100 text-green-700'
-                        : 'bg-yellow-100 text-yellow-700'
+                        ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400'
+                        : 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400'
                     }`}
                   >
                     {lesson.status}
@@ -165,7 +155,7 @@ export default function CourseDetails() {
                       href={lesson.video_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-sm text-blue-600 hover:underline ml-3"
+                      className="text-sm text-primary hover:text-primary-hover ml-3"
                     >
                       Watch video
                     </a>

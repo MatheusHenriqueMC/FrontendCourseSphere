@@ -1,1 +1,35 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-pixel: 'Press Start 2P', cursive;
+  --font-body: 'Nunito', sans-serif;
+
+  --color-primary: #6C5CE7;
+  --color-primary-hover: #5A4BD1;
+  --color-accent: #00CEC9;
+  --color-accent-hover: #00B5B0;
+  --color-danger: #FF6B6B;
+  --color-danger-hover: #EE5A5A;
+
+  --color-light-bg: #F8F9FA;
+  --color-light-card: #FFFFFF;
+  --color-light-text: #2D3436;
+  --color-light-text-secondary: #636E72;
+  --color-light-border: #DFE6E9;
+
+  --color-dark-bg: #020516;
+  --color-dark-card: #020516;
+  --color-dark-text: #EAEAEA;
+  --color-dark-text-secondary: #A0A0B0;
+  --color-dark-border: #475478;
+}
+
+body {
+  font-family: 'Nunito', sans-serif;
+}
+
+.dark {
+  color-scheme: dark;
+}

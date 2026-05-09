@@ -81,7 +81,7 @@ export default function LessonForm() {
 
   if (pageLoading) {
     return (
-      <div className="min-h-screen bg-gray-100">
+      <div className="min-h-screen bg-light-bg dark:bg-dark-bg">
         <Navbar />
         <Loading message="Loading lesson..." />
       </div>
@@ -89,15 +89,15 @@ export default function LessonForm() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-light-bg dark:bg-dark-bg">
       <Navbar />
 
       <div className="max-w-2xl mx-auto px-4 py-8">
-        <h2 className="text-2xl font-bold mb-6">
+        <h2 className="font-pixel text-sm text-light-text dark:text-dark-text mb-6">
           {isEditing ? 'Edit Lesson' : 'New Lesson'}
         </h2>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="bg-light-card dark:bg-dark-card rounded-xl shadow-sm border border-light-border dark:border-dark-border p-6">
           <ErrorMessage message={error} />
 
           <form onSubmit={handleSubmit}>
@@ -109,11 +109,11 @@ export default function LessonForm() {
             />
 
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+              <label className="block text-sm font-semibold text-light-text dark:text-dark-text mb-1">Status</label>
               <select
                 value={status}
                 onChange={(e) => setStatus(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-light-border dark:border-dark-border bg-light-card dark:bg-dark-bg text-light-text dark:text-dark-text rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
               >
                 <option value="draft">Draft</option>
                 <option value="published">Published</option>
