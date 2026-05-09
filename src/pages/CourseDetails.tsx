@@ -20,8 +20,13 @@ export default function CourseDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [deleteConfirm, setDeleteConfirm] = useState(false);
+  const [statusFilter, setStatusFilter] = useState<'all' | 'draft' | 'published'>('all');
 
   const isCreator = course?.creator_id === user?.id;
+
+  const filteredLessons = statusFilter === 'all'
+    ? lessons
+    : lessons.filter((l) => l.status === statusFilter);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,15 +123,28 @@ export default function CourseDetails() {
         <div className="mt-8">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-xl font-bold">Lessons</h3>
-            {isCreator && (
-              <Button onClick={() => navigate(`/courses/${id}/lessons/new`)}>+ New Lesson</Button>
-            )}
+            <div className="flex gap-3 items-center">
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value as 'all' | 'draft' | 'published')}
+                className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="all">All</option>
+                <option value="draft">Draft</option>
+                <option value="published">Published</option>
+              </select>
+              {isCreator && (
+                <Button onClick={() => navigate(`/courses/${id}/lessons/new`)}>+ New Lesson</Button>
+              )}
+            </div>
           </div>
 
-          {lessons.length === 0 && <EmptyState message="No lessons yet. Create your first one!" />}
+          {filteredLessons.length === 0 && (
+            <EmptyState message={statusFilter === 'all' ? 'No lessons yet. Create your first one!' : `No ${statusFilter} lessons found.`} />
+          )}
 
           <div className="space-y-3">
-            {lessons.map((lesson) => (
+            {filteredLessons.map((lesson) => (
               <div
                 key={lesson.id}
                 className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 flex justify-between items-center"
@@ -177,11 +195,7 @@ export default function CourseDetails() {
             ← Back to courses
           </Button>
         </div>
-        <div className="mt-6">
-          <Button variant="secondary" onClick={() => navigate('/')}>
-            ← Back to courses
-          </Button>
-        </div>
+
         <ChatBot courseId={Number(id)} />
       </div>
     </div>
