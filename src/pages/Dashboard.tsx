@@ -4,12 +4,12 @@ import { useAuth } from '../contexts/useAuth';
 import api from '../services/api';
 import { Course } from '../types';
 import Navbar from '../components/Navbar';
+import HeroBanner from '../components/HeroBanner';
 import CourseCard from '../components/CourseCard';
 import Loading from '../components/Loading';
 import EmptyState from '../components/EmptyState';
 import ErrorMessage from '../components/ErrorMessage';
 import Button from '../components/Button';
-import HeroBanner from '../components/HeroBanner';
 
 const COURSES_PER_PAGE = 6;
 
@@ -17,7 +17,8 @@ export default function Dashboard() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [myPage, setMyPage] = useState(1);
+  const [createdPage, setCreatedPage] = useState(1);
+  const [enrolledPage, setEnrolledPage] = useState(1);
   const [explorePage, setExplorePage] = useState(1);
 
   const { user } = useAuth();
@@ -36,18 +37,25 @@ export default function Dashboard() {
     };
 
     fetchCourses();
-    // eslint-disable-next-line react-hooks/set-state-in-effect
+     
   }, []);
 
-  const myCourses = courses.filter((c) => c.creator_id === user?.id);
-  const exploreCourses = courses.filter((c) => c.creator_id !== user?.id);
+  const myCreatedCourses = courses.filter((c) => c.creator_id === user?.id);
+  const myEnrolledCourses = courses.filter((c) => c.creator_id !== user?.id && c.is_enrolled);
+  const exploreCourses = courses.filter((c) => c.creator_id !== user?.id && !c.is_enrolled);
 
-  const myTotalPages = Math.ceil(myCourses.length / COURSES_PER_PAGE);
+  const createdTotalPages = Math.ceil(myCreatedCourses.length / COURSES_PER_PAGE);
+  const enrolledTotalPages = Math.ceil(myEnrolledCourses.length / COURSES_PER_PAGE);
   const exploreTotalPages = Math.ceil(exploreCourses.length / COURSES_PER_PAGE);
 
-  const paginatedMyCourses = myCourses.slice(
-    (myPage - 1) * COURSES_PER_PAGE,
-    myPage * COURSES_PER_PAGE
+  const paginatedCreatedCourses = myCreatedCourses.slice(
+    (createdPage - 1) * COURSES_PER_PAGE,
+    createdPage * COURSES_PER_PAGE
+  );
+
+  const paginatedEnrolledCourses = myEnrolledCourses.slice(
+    (enrolledPage - 1) * COURSES_PER_PAGE,
+    enrolledPage * COURSES_PER_PAGE
   );
 
   const paginatedExploreCourses = exploreCourses.slice(
@@ -65,17 +73,17 @@ export default function Dashboard() {
           disabled={currentPage === 1}
           className="px-3 py-1 rounded-lg border border-light-border dark:border-dark-border text-sm text-light-text dark:text-dark-text disabled:opacity-50 disabled:cursor-not-allowed hover:bg-light-border dark:hover:bg-dark-border transition"
         >
-          Previous
+          Anterior
         </button>
         <span className="text-sm text-light-text-secondary dark:text-dark-text-secondary">
-          Page {currentPage} of {totalPages}
+          Página {currentPage} de {totalPages}
         </span>
         <button
           onClick={() => setPage(currentPage + 1)}
           disabled={currentPage === totalPages}
           className="px-3 py-1 rounded-lg border border-light-border dark:border-dark-border text-sm text-light-text dark:text-dark-text disabled:opacity-50 disabled:cursor-not-allowed hover:bg-light-border dark:hover:bg-dark-border transition"
         >
-          Next
+          Próxima
         </button>
       </div>
     );
@@ -87,37 +95,61 @@ export default function Dashboard() {
       <HeroBanner />
 
       <div className="max-w-5xl mx-auto px-4 py-8">
-                <div className="flex justify-between items-start mb-6">
-          <div>
-            <h2 className="font-pixel text-sm text-light-text dark:text-dark-text">Meus Cursos</h2>
-            <p className="text-sm text-light-text-secondary dark:text-dark-text-secondary mt-2">
-              Aqui você irá visualizar seus últimos cursos iniciados, volte a estudar!
-            </p>
-          </div>
-          <Button onClick={() => navigate('/courses/new')}>+ New Course</Button>
-        </div>
-
-        {loading && <Loading message="Loading courses..." />}
+        {loading && <Loading message="Carregando cursos..." />}
         {error && <ErrorMessage message={error} />}
 
-        {!loading && myCourses.length === 0 && (
-          <EmptyState message="No courses yet. Create your first one!" />
+        <div className="flex justify-between items-start mb-6">
+          <div>
+            <h2 className="font-pixel text-sm text-light-text dark:text-dark-text">Meus Cursos Criados</h2>
+            <p className="text-sm text-light-text-secondary dark:text-dark-text-secondary mt-2">
+              Volte a editar ou adicionar novas aulas nos seus cursos criados!
+            </p>
+          </div>
+          <Button onClick={() => navigate('/courses/new')}>Novo Curso</Button>
+        </div>
+
+        {!loading && myCreatedCourses.length === 0 && (
+          <EmptyState message="Você ainda não criou nenhum curso. Crie o primeiro!" />
         )}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {paginatedMyCourses.map((course) => (
+          {paginatedCreatedCourses.map((course) => (
             <CourseCard key={course.id} course={course} />
           ))}
         </div>
 
-        {renderPagination(myPage, myTotalPages, setMyPage)}
+        {renderPagination(createdPage, createdTotalPages, setCreatedPage)}
+
+        {!loading && (
+          <>
+            <div className="mt-12 mb-6">
+              <h2 className="font-pixel text-sm text-light-text dark:text-dark-text">Meus Cursos Inscritos</h2>
+              <p className="text-sm text-light-text-secondary dark:text-dark-text-secondary mt-2">
+                Volte a estudar nos seus cursos inscritos favoritos agora!
+              </p>
+            </div>
+
+            {myEnrolledCourses.length === 0 ? (
+              <EmptyState message="Você ainda não se inscreveu em nenhum curso. Explore os cursos abaixo!" />
+            ) : (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {paginatedEnrolledCourses.map((course) => (
+                    <CourseCard key={course.id} course={course} />
+                  ))}
+                </div>
+                {renderPagination(enrolledPage, enrolledTotalPages, setEnrolledPage)}
+              </>
+            )}
+          </>
+        )}
 
         {!loading && exploreCourses.length > 0 && (
           <>
             <div className="mt-12 mb-6">
-              <h2 className="font-pixel text-sm text-light-text dark:text-dark-text">Explore todos os cursos</h2>
+              <h2 className="font-pixel text-sm text-light-text dark:text-dark-text">Explorar Cursos</h2>
               <p className="text-sm text-light-text-secondary dark:text-dark-text-secondary mt-2">
-                Visualize aqui todos os cursos disponíveis para você estudar e aprender cada vez mais!
+                Visualize aqui todos os cursos disponíveis para você!
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

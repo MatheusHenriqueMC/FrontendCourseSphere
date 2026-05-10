@@ -1,8 +1,11 @@
-/* eslint-disable react-hooks/purity */
 import { Course } from '../types';
+import Button from './Button';
 
 interface CourseHeroBannerProps {
   course: Course;
+  onEnroll?: () => void;
+  onUnenroll?: () => void;
+  isCreator: boolean;
 }
 
 const PLACEHOLDER_IMAGE = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200&h=400&fit=crop';
@@ -13,9 +16,9 @@ const LEVEL_STYLES: Record<string, string> = {
   advanced: 'bg-purple-500/20 text-purple-300 border border-purple-500/30',
 };
 
-export default function CourseHeroBanner({ course }: CourseHeroBannerProps) {
+export default function CourseHeroBanner({ course, onEnroll, onUnenroll, isCreator }: CourseHeroBannerProps) {
   return (
-    <div className="relative w-full h-72 overflow-hidden">
+    <div className="relative w-full h-80 overflow-hidden">
       <img
         src={course.image_url || PLACEHOLDER_IMAGE}
         alt={course.name}
@@ -40,10 +43,27 @@ export default function CourseHeroBanner({ course }: CourseHeroBannerProps) {
             </p>
           )}
 
-          <div className="flex items-center gap-6 text-sm text-white/60">
+          <div className="flex items-center gap-6 text-sm text-white/60 mb-4">
             <span>📅 {course.start_date} → {course.end_date}</span>
-            <span>👥 {Math.floor(Math.random() * 500) + 50} learners</span>
+            <span>👥 {course.enrollment_count} learners</span>
           </div>
+
+          {!isCreator && (
+            <div>
+              {course.is_enrolled ? (
+                <button
+                  onClick={onUnenroll}
+                  className="bg-white/20 text-white px-6 py-2 rounded-lg border border-white/30 hover:bg-white/30 transition text-sm font-semibold"
+                >
+                  ✓ Enrolled — Click to unenroll
+                </button>
+              ) : (
+                <Button onClick={onEnroll}>
+                  Start Course
+                </Button>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>

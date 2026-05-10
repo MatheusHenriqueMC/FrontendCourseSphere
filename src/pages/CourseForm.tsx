@@ -155,7 +155,7 @@ export default function CourseForm() {
               label="URL da Imagem"
               value={imageUrl}
               onChange={setImageUrl}
-              placeholder="https://example.com/image.jpg)"
+              placeholder="https://example.com/image.jpg"
             />
 
             <div className="mb-4">

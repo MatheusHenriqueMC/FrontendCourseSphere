@@ -51,13 +51,13 @@ export default function Navbar() {
                 </div>
             </button>
             <span className="text-sm text-light-text-secondary dark:text-dark-text-secondary">
-              Hello, {user?.name}
+              Olá, {user?.name}
             </span>
             <button
               onClick={handleLogout}
               className="text-sm text-danger hover:text-danger-hover transition"
             >
-              Logout
+              Sair
             </button>
           </div>
         </div>
