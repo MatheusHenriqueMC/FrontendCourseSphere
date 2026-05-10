@@ -71,7 +71,7 @@ export default function Dashboard() {
         <button
           onClick={() => setPage(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-3 py-1 rounded-lg border border-light-border dark:border-dark-border text-sm text-light-text dark:text-dark-text disabled:opacity-50 disabled:cursor-not-allowed hover:bg-light-border dark:hover:bg-dark-border transition"
+          className="px-3 py-1 rounded-lg border border-light-border dark:border-dark-border text-sm text-light-text dark:text-dark-text disabled:opacity-50 disabled:cursor-not-allowed hover:bg-light-border dark:hover:bg-dark-border transition cursor-pointer"
         >
           Anterior
         </button>
@@ -81,7 +81,7 @@ export default function Dashboard() {
         <button
           onClick={() => setPage(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="px-3 py-1 rounded-lg border border-light-border dark:border-dark-border text-sm text-light-text dark:text-dark-text disabled:opacity-50 disabled:cursor-not-allowed hover:bg-light-border dark:hover:bg-dark-border transition"
+          className="px-3 py-1 rounded-lg border border-light-border dark:border-dark-border text-sm text-light-text dark:text-dark-text disabled:opacity-50 disabled:cursor-not-allowed hover:bg-light-border dark:hover:bg-dark-border transition cursor-pointer"
         >
           Próxima
         </button>

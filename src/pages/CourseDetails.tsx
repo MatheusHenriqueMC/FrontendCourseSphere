@@ -70,10 +70,15 @@ export default function CourseDetails() {
     }
   };
 
-  const handleUnenroll = async () => {
+  const handleUnenrollClick = () => {
+    setUnenrollConfirm(true);
+  };
+
+  const handleUnenrollConfirm = async () => {
     try {
       const response = await api.delete(`/courses/${id}/unenroll`);
       setCourse((prev) => prev ? { ...prev, is_enrolled: false, enrollment_count: response.data.enrollment_count } : prev);
+      setUnenrollConfirm(false);
     } catch {
       setError('Failed to unenroll');
     }
@@ -126,6 +131,8 @@ export default function CourseDetails() {
     setOpenSections((prev) => ({ ...prev, [sectionId]: !prev[sectionId] }));
   };
 
+  const [unenrollConfirm, setUnenrollConfirm] = useState(false);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-light-bg dark:bg-dark-bg">
@@ -150,9 +157,29 @@ export default function CourseDetails() {
       <CourseHeroBanner
         course={course}
         onEnroll={handleEnroll}
-        onUnenroll={handleUnenroll}
+        onUnenroll={handleUnenrollClick}
         isCreator={isCreator}
       />
+      {unenrollConfirm && (
+          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+            <div className="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-xl p-6 max-w-sm w-full mx-4 shadow-2xl">
+              <h3 className="font-pixel text-xs text-light-text dark:text-dark-text text-center mb-4">
+                Desinscrever
+              </h3>
+              <p className="text-sm text-light-text-secondary dark:text-dark-text-secondary text-center mb-6">
+                Tem certeza que deseja se desinscrever deste curso?
+              </p>
+              <div className="flex gap-3 justify-center">
+                <Button variant="danger" onClick={handleUnenrollConfirm}>
+                  Sim
+                </Button>
+                <Button variant="secondary" onClick={() => setUnenrollConfirm(false)}>
+                  Não
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
 
       <div className="max-w-4xl mx-auto px-4 py-8">
         {isCreator && (
@@ -225,7 +252,7 @@ export default function CourseDetails() {
                   <div key={section.id} className="bg-light-card dark:bg-dark-card border border-light-border dark:border-dark-border rounded-lg overflow-hidden">
                     <button
                       onClick={() => toggleSection(section.id)}
-                      className="w-full flex items-center justify-between p-4 hover:bg-light-bg dark:hover:bg-dark-bg transition"
+                      className="w-full flex items-center justify-between p-4 hover:bg-light-bg dark:hover:bg-dark-bg transition cursor-pointer"
                     >
                       <div className="flex items-center gap-3">
                         <span className="w-8 h-8 rounded-full border-2 border-primary text-primary flex items-center justify-center text-sm font-bold">

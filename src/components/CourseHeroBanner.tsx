@@ -45,7 +45,7 @@ export default function CourseHeroBanner({ course, onEnroll, onUnenroll, isCreat
 
           <div className="flex items-center gap-6 text-sm text-white/60 mb-4">
             <span>📅 {course.start_date} → {course.end_date}</span>
-            <span>👥 {course.enrollment_count} learners</span>
+            <span>👥 {course.enrollment_count} {course.enrollment_count === 1 ? 'inscrito' : 'inscritos'}</span>
           </div>
 
           {!isCreator && (
@@ -53,13 +53,13 @@ export default function CourseHeroBanner({ course, onEnroll, onUnenroll, isCreat
               {course.is_enrolled ? (
                 <button
                   onClick={onUnenroll}
-                  className="bg-white/20 text-white px-6 py-2 rounded-lg border border-white/30 hover:bg-white/30 transition text-sm font-semibold"
+                  className="bg-white/20 text-white px-6 py-2 rounded-lg border border-white/30 hover:bg-red-500/30 hover:border-red-400/50 transition text-sm font-semibold cursor-pointer"
                 >
-                  ✓ Enrolled — Click to unenroll
+                  ✓ Inscrito — Clique para desinscrever
                 </button>
               ) : (
                 <Button onClick={onEnroll}>
-                  Start Course
+                  Iniciar Curso
                 </Button>
               )}
             </div>

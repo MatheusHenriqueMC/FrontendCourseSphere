@@ -60,7 +60,7 @@ export default function ChatBot({ courseId }: ChatBotProps) {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 bg-primary text-white w-14 h-14 rounded-full shadow-lg hover:bg-primary-hover transition flex items-center justify-center text-2xl z-50"
+        className="fixed bottom-6 right-6 bg-primary text-white w-14 h-14 rounded-full shadow-lg hover:bg-primary-hover transition flex items-center justify-center text-2xl z-50 cursor-pointer"
       >
         💬
       </button>
