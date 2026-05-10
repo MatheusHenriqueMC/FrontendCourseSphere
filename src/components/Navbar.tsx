@@ -28,14 +28,14 @@ export default function Navbar() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => setSearchOpen(true)}
-              className="flex items-center rounded-lg hover:bg-[#F1f5F9] dark:hover:bg-[#1E293B] transition"
+              className="flex items-center rounded-lg hover:bg-[#F1f5F9] dark:hover:bg-[#1E293B] transition cursor-pointer"
               title="Search courses"
             >
               <img src="/search-icon.png" alt="Search" className="w-7 h-7" />
             </button>
             <button
               onClick={toggleTheme}
-              className="flex items-center relative group rounded-lg hover:bg-[#F1F5F9] dark:hover:bg-[#1E293B] transition"
+              className="flex items-center relative group rounded-lg hover:bg-[#F1F5F9] dark:hover:bg-[#1E293B] transition cursor-pointer"
             >
               {isDark ? (
                 <img src="/sun-icon.png" alt="Light mode" className="w-7 h-7 relative top-[1px]" />
@@ -55,7 +55,7 @@ export default function Navbar() {
             </span>
             <button
               onClick={handleLogout}
-              className="text-sm text-danger hover:text-danger-hover transition"
+              className="text-sm text-danger hover:text-danger-hover transition cursor-pointer"
             >
               Sair
             </button>

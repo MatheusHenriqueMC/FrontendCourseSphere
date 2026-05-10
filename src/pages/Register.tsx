@@ -59,7 +59,7 @@ export default function Register() {
 
       <button
         onClick={toggleTheme}
-        className="absolute top-6 right-6 z-20 p-2 rounded-lg hover:bg-white/20 transition"
+        className="absolute top-6 right-6 z-20 p-2 rounded-lg hover:bg-white/20 transition cursor-pointer"
       >
         {isDark ? (
           <img src="/sun-icon.png" alt="Light mode" className="w-8 h-8" />
