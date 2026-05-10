@@ -8,12 +8,12 @@ interface ButtonProps {
 }
 
 export default function Button({ children, type = 'button', onClick, disabled = false, variant = 'primary', fullWidth = false }: ButtonProps) {
-  const baseClasses = 'px-4 py-2 rounded-md transition disabled:opacity-50 disabled:cursor-not-allowed';
+  const baseClasses = 'px-4 py-2 rounded-lg transition font-semibold text-sm disabled:opacity-50 disabled:cursor-not-allowed';
 
   const variantClasses = {
-    primary: 'bg-blue-600 text-white hover:bg-blue-700',
-    danger: 'bg-red-600 text-white hover:bg-red-700',
-    secondary: 'bg-gray-200 text-gray-700 hover:bg-gray-300',
+    primary: 'bg-primary text-white hover:bg-primary-hover',
+    danger: 'bg-danger text-white hover:bg-danger-hover',
+    secondary: 'bg-light-border dark:bg-dark-border text-light-text dark:text-dark-text hover:opacity-80',
   };
 
   return (
